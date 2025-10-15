@@ -28,11 +28,7 @@ body {
     background-color: var(--dark-bg);
     color: var(--text-primary);
     line-height: 1.6;
-    
-    /* PENINGKATAN: Background Pattern */
     background-image: linear-gradient(rgba(18, 18, 18, 0.95), rgba(18, 18, 18, 0.95)), url('https://www.transparenttextures.com/patterns/carbon-fibre-v2.png');
-    
-    /* PENINGKATAN: Sticky Footer Setup */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -43,12 +39,9 @@ body {
 }
 
 /* --- STYLING KOMPONEN UTAMA --- */
-
-/* GANTI SEMUA STYLE HEADER LAMA DENGAN INI */
-/* GANTI SEBAGIAN DARI STYLE HEADER LAMA DENGAN INI */
 header {
     position: relative;
-    height: 45vh; /* DIUBAH: Dari 60vh menjadi 45vh */
+    height: 45vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,14 +57,10 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
-    /* --- BAGIAN YANG DIPERBARUI --- */
-    /* Paksa video untuk menjaga rasio 16:9 dan selalu menutupi area */
-    width: 100vw; /* Set lebar video agar sama dengan lebar layar penuh */
-    height: 56.25vw; /* Set tinggi = 56.25% dari lebar layar (ini adalah rasio 16:9) */
-    min-height: 100%; /* Pastikan tinggi minimal adalah 100% dari header */
-    min-width: 177.77vh; /* Pastikan lebar minimal adalah 177% dari tinggi header (juga rasio 16:9) */
-    
+    width: 100vw;
+    height: 56.25vw;
+    min-height: 100%;
+    min-width: 177.77vh;
     z-index: 1;
 }
 
@@ -89,9 +78,6 @@ header {
     position: relative;
     z-index: 3;
 }
-
-/* Kita tidak perlu lagi style khusus untuk .header-content .logo atau .tagline
-   karena sudah di-handle oleh style header utama, jadi Anda bisa menghapusnya jika ada */
 
 header .logo {
     font-size: 3.5rem;
@@ -163,18 +149,11 @@ section {
     text-shadow: var(--yellow-glow);
 }
 
-.content-body hr {
-    border: 0;
-    border-top: 1px solid var(--border-color);
-    margin: 1rem 0;
-}
-
 aside {
     padding: 2rem;
     background-color: var(--light-bg);
 }
 
-/* BARU: Styling Foto Profil */
 .profile-picture {
     width: 180px;
     height: 180px;
@@ -192,12 +171,9 @@ aside {
     margin-bottom: 1.5rem;
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    /* PENINGKATAN: Bentuk sudut yang tajam */
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
 }
 
-/* PENINGKATAN: Efek hover pada card */
 .aside-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -211,15 +187,6 @@ aside {
     padding-bottom: 0.5rem;
 }
 
-.aside-card a {
-    color: var(--text-primary);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-.aside-card a:hover {
-    color: var(--lamborghini-yellow);
-}
-
 footer {
     text-align: center;
     padding: 1.5rem;
@@ -229,44 +196,70 @@ footer {
     border-top: 1px solid var(--border-color);
 }
 
-/* Animasi Sederhana */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- LAYOUT RESPONSIVE (Sama seperti sebelumnya, tapi lebih baik) --- */
+/* --- PENYESUAIAN LAYOUT RESPONSIVE SESUAI SOAL --- */
 .main-container {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-areas: "nav" "section" "aside";
+    width: 100%;
+    margin: 0 auto;
 }
 
-nav { grid-area: nav; }
+/* 1. Layout untuk Smart Phone (Default) */
+.main-container {
+    grid-template-columns: 100%;
+    grid-template-areas:
+        "nav"
+        "section"
+        "aside";
+}
+nav { grid-area: nav; border-bottom: 1px solid var(--border-color); }
 section { grid-area: section; }
 aside { grid-area: aside; }
 
-@media (min-width: 900px) {
-    .main-container {
-        grid-template-columns: 25% 75%;
-        grid-template-areas: "nav section" "nav aside";
-    }
-    nav ul {
-        flex-direction: column;
-        align-items: flex-start;
-        padding-top: 2rem;
-    }
-    nav li { width: 100%; }
-    nav a { display: block; width: 100%; }
+nav ul {
+    flex-direction: column;
+}
+nav li {
+    padding: 0.5rem 0;
 }
 
+/* 2. Layout untuk Tablet Portrait (lebar > 600px) */
+@media (min-width: 600px) {
+    nav ul {
+        flex-direction: row; /* Menu NAV menjadi horizontal */
+    }
+}
+
+/* 3. Layout untuk Tablet Landscape (lebar > 900px) */
+@media (min-width: 900px) {
+    .main-container {
+        grid-template-columns: 25% 1fr; /* 1fr akan mengisi sisa 75% */
+        grid-template-areas:
+            "nav section"
+            "aside aside"; /* ASIDE sekarang 100% di bawah NAV dan SECTION */
+    }
+    nav ul {
+        flex-direction: column; /* Menu NAV kembali menjadi vertikal */
+    }
+    nav {
+        border-right: 1px solid var(--border-color);
+        border-bottom: none;
+    }
+}
+
+/* 4. Layout untuk Desktop (lebar > 1200px) */
 @media (min-width: 1200px) {
     .main-container {
-        grid-template-columns: 25% 50% 25%;
-        grid-template-areas: "nav section aside";
         max-width: 1600px;
-        margin: 0 auto;
+        grid-template-columns: 25% 1fr 25%; /* 1fr akan mengisi sisa 50% */
+        grid-template-areas:
+            "nav section aside"; /* ASIDE pindah ke samping kanan */
     }
-    nav { border-right: 1px solid var(--border-color); }
-    aside { border-left: 1px solid var(--border-color); }
+    aside {
+        border-left: 1px solid var(--border-color);
+    }
 }
